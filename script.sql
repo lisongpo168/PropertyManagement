@@ -16,6 +16,45 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `业主信息`
+--
+
+DROP TABLE IF EXISTS `业主信息`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `业主信息` (
+  `业主编号` varchar(30) NOT NULL,
+  `业主姓名` varchar(50) DEFAULT NULL,
+  `身份证号码` varchar(50) DEFAULT NULL,
+  `楼栋名称` varchar(50) DEFAULT NULL,
+  `单元名称` varchar(50) DEFAULT NULL,
+  `房号名称` varchar(50) DEFAULT NULL,
+  `房屋性质` varchar(50) DEFAULT NULL,
+  `房屋类型` varchar(50) DEFAULT NULL,
+  `建筑面积` float DEFAULT NULL,
+  `套内面积` float DEFAULT NULL,
+  `常住人员` varchar(50) DEFAULT NULL,
+  `联系电话` varchar(50) DEFAULT NULL,
+  `入住日期` date DEFAULT NULL,
+  `当前状态` varchar(50) DEFAULT NULL,
+  `补充说明` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`业主编号`),
+  KEY `FK_业主信息_楼栋信息_idx` (`楼栋名称`),
+  CONSTRAINT `FK_业主信息_楼栋信息` FOREIGN KEY (`楼栋名称`) REFERENCES `楼栋信息` (`楼栋名称`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=gbk;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `业主信息`
+--
+
+LOCK TABLES `业主信息` WRITE;
+/*!40000 ALTER TABLE `业主信息` DISABLE KEYS */;
+INSERT INTO `业主信息` VALUES ('1-502','赵六','7894561236*985','致敬园1号楼','4单元','502','住宅','地方官',96,52,'规划局','1234569385','2018-02-06','已入住','14'),('106256','李三哥','33012589098625894658','未来星一幢','一单元','403','住宅','住宅',100,89,'李三哥','13669894563','2016-03-26','入住','暂无');
+/*!40000 ALTER TABLE `业主信息` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `小区信息`
 --
 
@@ -131,8 +170,35 @@ CREATE TABLE `楼栋信息` (
 
 LOCK TABLES `楼栋信息` WRITE;
 /*!40000 ALTER TABLE `楼栋信息` DISABLE KEYS */;
-INSERT INTO `楼栋信息` VALUES ('123123','232','123123','12312',2122,22,22,200,22,22,'2324','234','暂无'),('未来星一幢','西南','4个单元','18层',100,100,60,40,100,0,'层高','13656894568','哈哈');
+INSERT INTO `楼栋信息` VALUES ('未来星一幢','西南','4个单元','18层',100,100,60,40,100,0,'层高','13656894568','哈哈'),('致敬园1号楼','232','123123','6层',2122,22,22,0,22,22,'自动','234','暂无');
 /*!40000 ALTER TABLE `楼栋信息` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `迁出信息`
+--
+
+DROP TABLE IF EXISTS `迁出信息`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `迁出信息` (
+  `业主编号` varchar(30) NOT NULL,
+  `业主姓名` varchar(50) DEFAULT NULL,
+  `迁出日期` date DEFAULT NULL,
+  `迁出原因` varchar(50) DEFAULT NULL,
+  `补充说明` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`业主编号`),
+  CONSTRAINT `FK_迁出信息_业主信息` FOREIGN KEY (`业主编号`) REFERENCES `业主信息` (`业主编号`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=gbk;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `迁出信息`
+--
+
+LOCK TABLES `迁出信息` WRITE;
+/*!40000 ALTER TABLE `迁出信息` DISABLE KEYS */;
+/*!40000 ALTER TABLE `迁出信息` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -144,4 +210,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-12 18:06:45
+-- Dump completed on 2018-11-13 17:50:15
