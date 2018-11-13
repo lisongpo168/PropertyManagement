@@ -41,15 +41,14 @@
             System.Windows.Forms.Label 联系电话Label;
             System.Windows.Forms.Label 补充说明Label;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuildingForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.楼栋信息BindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.楼栋信息BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dBCommunityDataSet = new MyCommunity.Data.DBCommunityDataSet();
             this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.楼栋信息BindingNavigatorSaveItem = new System.Windows.Forms.ToolStripButton();
             this.打印ToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.楼栋名称TextBox = new System.Windows.Forms.TextBox();
@@ -198,9 +197,8 @@
             this.楼栋信息BindingNavigator.AddNewItem = this.bindingNavigatorAddNewItem;
             this.楼栋信息BindingNavigator.BindingSource = this.楼栋信息BindingSource;
             this.楼栋信息BindingNavigator.CountItem = null;
-            this.楼栋信息BindingNavigator.DeleteItem = this.bindingNavigatorDeleteItem;
+            //this.楼栋信息BindingNavigator.DeleteItem = this.bindingNavigatorDeleteItem;
             this.楼栋信息BindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.bindingNavigatorSeparator,
             this.bindingNavigatorAddNewItem,
             this.bindingNavigatorDeleteItem,
             this.楼栋信息BindingNavigatorSaveItem,
@@ -241,11 +239,7 @@
             this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
             this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(51, 22);
             this.bindingNavigatorDeleteItem.Text = "删除";
-            // 
-            // bindingNavigatorSeparator
-            // 
-            this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 25);
+            this.bindingNavigatorDeleteItem.Click += new System.EventHandler(this.bindingNavigatorDeleteItem_Click);
             // 
             // 楼栋信息BindingNavigatorSaveItem
             // 
@@ -369,14 +363,14 @@
             this.楼栋信息DataGridView.AutoGenerateColumns = false;
             this.楼栋信息DataGridView.BackgroundColor = System.Drawing.Color.LightGray;
             this.楼栋信息DataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.GradientActiveCaption;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.楼栋信息DataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.楼栋信息DataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.楼栋信息DataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.楼栋名称DataGridViewTextBoxColumn,
             this.所处位置DataGridViewTextBoxColumn,
@@ -394,22 +388,22 @@
             this.楼栋信息DataGridView.MultiSelect = false;
             this.楼栋信息DataGridView.Name = "楼栋信息DataGridView";
             this.楼栋信息DataGridView.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.楼栋信息DataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.楼栋信息DataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.楼栋信息DataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Green;
-            this.楼栋信息DataGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.Green;
+            this.楼栋信息DataGridView.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.楼栋信息DataGridView.RowTemplate.Height = 23;
             this.楼栋信息DataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.楼栋信息DataGridView.Size = new System.Drawing.Size(523, 326);
             this.楼栋信息DataGridView.TabIndex = 24;
-            this.楼栋信息DataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.楼栋信息DataGridView_CellContentClick);
+            this.楼栋信息DataGridView.SelectionChanged += new System.EventHandler(this.楼栋信息DataGridView_SelectionChanged);
             // 
             // 楼栋名称DataGridViewTextBoxColumn
             // 
@@ -545,7 +539,6 @@
         private System.Windows.Forms.BindingNavigator 楼栋信息BindingNavigator;
         private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem;
-        private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator;
         private System.Windows.Forms.ToolStripButton 楼栋信息BindingNavigatorSaveItem;
         private System.Windows.Forms.TextBox 楼栋名称TextBox;
         private System.Windows.Forms.TextBox 所处位置TextBox;
