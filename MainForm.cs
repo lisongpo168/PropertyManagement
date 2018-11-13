@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using MyCommunity.Common;
 namespace MyCommunity
 {
     public partial class MainForm : Form
@@ -46,7 +47,7 @@ namespace MyCommunity
                 //最大化显示系统主窗体
                 if (MyOperator.Length > 0)
                 {
-                    this.WindowState = FormWindowState.Maximized;
+                    this.WindowState = FormWindowState.Normal;
                 }
                 //设置系统背景图像信息
                 this.BackColor = Color.Gray;
@@ -253,7 +254,7 @@ namespace MyCommunity
 
         private void 退出系统ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("您确定现在退出本系统吗？", "信息提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (new MsgBoxForm("警告", "您确定现在退出本系统吗？", true).ShowDialog() == DialogResult.OK)
             {
                 this.Close();
             }
