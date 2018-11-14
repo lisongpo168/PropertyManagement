@@ -62,6 +62,7 @@ namespace MyCommunity
                 }
                 SaveNewBuilding(query);
                 SynBuilding();
+                new MsgBoxForm("提示", "保存成功！").ShowDialog();
             }
             catch (Exception ex)
             {

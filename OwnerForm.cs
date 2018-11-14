@@ -43,13 +43,13 @@ namespace MyCommunity
                 string v_套内面积 = Helper.GetTextBoxCtrlValue(this.Controls, "套内面积");
                 string v_常住人员 = Helper.GetTextBoxCtrlValue(this.Controls, "常住人员");
                 string v_联系电话 = Helper.GetTextBoxCtrlValue(this.Controls, "联系电话");
-                string v_入住日期 = this.入住日期DateTimePicker.Value.ToString("yyyy-MM-dd");
+                string v_入住日期 = Helper.GetDateCtrlValue(this.Controls, "入住日期");
                 string v_当前状态 = Helper.GetComBoxCtrlValue(this.Controls, "当前状态");
                 string v_补充说明 = Helper.GetTextBoxCtrlValue(this.Controls, "补充说明");
                 string query = string.Empty;
                 if (IsNewAdded(v_业主编号))
                 {
-                    query = string.Format("insert into 业主信息(`业主编号`, `业主姓名`, `身份证号码`, `楼栋名称`, `单元名称`, `房号名称`, `房屋性质`, `房屋类型`, `建筑面积`, `套内面积`, `常住人员`, `联系电话`, `入住日期`, `当前状态`, `补充说明`)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',{8},{9},'{10}','{11}','{12}','{13}','14')",
+                    query = string.Format("insert into 业主信息(`业主编号`, `业主姓名`, `身份证号码`, `楼栋名称`, `单元名称`, `房号名称`, `房屋性质`, `房屋类型`, `建筑面积`, `套内面积`, `常住人员`, `联系电话`, `入住日期`, `当前状态`, `补充说明`)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',{8},{9},'{10}','{11}','{12}','{13}','{14}')",
                         v_业主编号, v_业主姓名, v_身份证号码, v_楼栋名称, v_单元名称, v_房号名称, v_房屋性质, v_房屋类型, v_建筑面积, v_套内面积, v_常住人员, v_联系电话, v_入住日期, v_当前状态, v_补充说明);
                 }
                 else
@@ -59,12 +59,12 @@ namespace MyCommunity
                 }
                 SaveNewOwner(query);
                 SynOwner();
+                new MsgBoxForm("提示", "保存成功！").ShowDialog();
             }
             catch (Exception ex)
             {
 
             }
-
         }      
         private void 查询ToolStripButton_Click(object sender, EventArgs e)
         {
@@ -91,9 +91,9 @@ namespace MyCommunity
             DataHelper.UpdateOrDeleteRecord(query);
         }
 
-        private bool IsNewAdded(string ownerName)
+        private bool IsNewAdded(string ownerNo)
         {
-            string query = string.Format("select * from 业主信息 where 业主编号='{0}'", ownerName);
+            string query = string.Format("select * from 业主信息 where 业主编号='{0}'", ownerNo);
             System.Data.DataTable dt = DataHelper.GetDataTable(query);
             return dt.Rows.Count < 1;
         }
@@ -143,7 +143,7 @@ namespace MyCommunity
                     if(comboxNames.Contains(ctrlName))
                         Helper.SetComBoxCtrlValue(this.Controls, ctrlName, value);
                     if (dateNames.Contains(ctrlName))
-                        this.入住日期DateTimePicker.Value = Helper.StringToDate(value);
+                        Helper.SetDateCtrlValue(this.Controls, columnName, value);
                 }
             }
             if (currRow != null)
@@ -153,14 +153,15 @@ namespace MyCommunity
         private void bindingNavigatorDeleteItem_Click(object sender, EventArgs e)
         {
             string ownerNo = this.业主编号TextBox.Text.Trim();
+            string ownerName = this.业主姓名TextBox.Text.Trim();
             string buildName = this.楼栋名称ComboBox.Text.Trim();
             if (string.IsNullOrEmpty(ownerNo) || string.IsNullOrEmpty(buildName))
             {
                 new MsgBoxForm("提示", "没有选择正确的要删除的记录！").ShowDialog();
                 return;
             }
-
-            if (new MsgBoxForm("警告", "确定要删除该业主信息吗？ 删除后将无法恢复！", true).ShowDialog() == DialogResult.OK)
+            string tipInfo = string.Format("{0}({1})", ownerName, ownerNo);
+            if (new MsgBoxForm("警告", "确定要删除业主 " + tipInfo + " 的信息吗？ 删除后将无法恢复！", true).ShowDialog() == DialogResult.OK)
             {
                 string query = string.Format("delete from 业主信息 where 业主编号='{0}' and 楼栋名称='{1}'", ownerNo, buildName);
                 SaveNewOwner(query);

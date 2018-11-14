@@ -44,7 +44,6 @@
             this.迁出信息BindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
-            this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
             this.业主编号ToolStripLabel = new System.Windows.Forms.ToolStripLabel();
             this.业主编号ToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.查询ToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -56,6 +55,7 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
             this.迁出信息BindingNavigatorSaveItem = new System.Windows.Forms.ToolStripButton();
             this.业主编号TextBox = new System.Windows.Forms.TextBox();
             this.业主姓名ComboBox = new System.Windows.Forms.ComboBox();
@@ -149,7 +149,7 @@
             this.迁出信息BindingNavigator.AddNewItem = this.bindingNavigatorAddNewItem;
             this.迁出信息BindingNavigator.BindingSource = this.迁出信息BindingSource;
             this.迁出信息BindingNavigator.CountItem = this.bindingNavigatorCountItem;
-            this.迁出信息BindingNavigator.DeleteItem = this.bindingNavigatorDeleteItem;
+            this.迁出信息BindingNavigator.DeleteItem = null;
             this.迁出信息BindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.业主编号ToolStripLabel,
             this.业主编号ToolStripTextBox,
@@ -192,14 +192,6 @@
             this.bindingNavigatorCountItem.Text = "of {0}";
             this.bindingNavigatorCountItem.ToolTipText = "总项数";
             // 
-            // bindingNavigatorDeleteItem
-            // 
-            this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
-            this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
-            this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(51, 22);
-            this.bindingNavigatorDeleteItem.Text = "删除";
-            // 
             // 业主编号ToolStripLabel
             // 
             this.业主编号ToolStripLabel.Name = "业主编号ToolStripLabel";
@@ -210,7 +202,6 @@
             // 
             this.业主编号ToolStripTextBox.Name = "业主编号ToolStripTextBox";
             this.业主编号ToolStripTextBox.Size = new System.Drawing.Size(60, 25);
-            this.业主编号ToolStripTextBox.Text = "%%";
             // 
             // 查询ToolStripButton
             // 
@@ -279,6 +270,15 @@
             // 
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // bindingNavigatorDeleteItem
+            // 
+            this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
+            this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
+            this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(51, 22);
+            this.bindingNavigatorDeleteItem.Text = "删除";
+            this.bindingNavigatorDeleteItem.Click += new System.EventHandler(this.bindingNavigatorDeleteItem_Click);
             // 
             // 迁出信息BindingNavigatorSaveItem
             // 
@@ -406,6 +406,7 @@
             this.迁出信息DataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.迁出信息DataGridView.Size = new System.Drawing.Size(523, 323);
             this.迁出信息DataGridView.TabIndex = 33;
+            this.迁出信息DataGridView.SelectionChanged += new System.EventHandler(this.迁出信息DataGridView_SelectionChanged);
             // 
             // 业主编号DataGridViewTextBoxColumn
             // 
@@ -461,6 +462,7 @@
             this.Controls.Add(补充说明Label);
             this.Controls.Add(this.补充说明TextBox);
             this.Controls.Add(this.迁出信息BindingNavigator);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MoveForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
