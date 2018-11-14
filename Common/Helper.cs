@@ -50,6 +50,19 @@ namespace MyCommunity.Common
             return dt;
         }
 
+        public static void SetDateCtrlValue(Control.ControlCollection controls, string name, string value)
+        {
+            try
+            {
+                name = name + "DateTimePicker";
+                if (controls.Find(name, false).Count() > 0)
+                {
+                    ((System.Windows.Forms.DateTimePicker)(controls.Find(name, false)[0])).Value = StringToDate(value);
+                }
+            }
+            catch (Exception ex) { }
+        }
+
         public static void SetTextBoxCtrlValue(Control.ControlCollection controls, string name, string value)
         {
             try
@@ -74,6 +87,25 @@ namespace MyCommunity.Common
                 }
             }
             catch (Exception ex) { }
+        }
+
+        public static string GetDateCtrlValue(Control.ControlCollection controls, string name)
+        {
+            string value = string.Empty;
+            try
+            {
+                name = name + "DateTimePicker";
+                if (controls.Find(name, false).Count() > 0)
+                {
+                    DateTime dt = ((System.Windows.Forms.DateTimePicker)(controls.Find(name, false)[0])).Value;
+                    value = dt.ToString("yyyy-MM-dd");
+                }
+                return value;
+            }
+            catch (Exception ex)
+            {
+                return value;
+            }
         }
 
         public static string GetTextBoxCtrlValue(Control.ControlCollection controls, string name)
@@ -159,8 +191,14 @@ namespace MyCommunity.Common
                 Range MyRange22 = MyWorkSheet.get_Range("B2", "B2");
                 MyRange22.Font.Bold = true;
                 MyRange22.Font.Size = "20";
-                MyWorkSheet.Cells[4, 1] = "打印日期：" + DateTime.Now.ToShortDateString();
+                MyWorkSheet.Cells[4, 1] = "打印时间：" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                MyWorkSheet.PageSetup.LeftMargin = 0.1;
+                MyWorkSheet.PageSetup.RightMargin = 0.1;
+                MyWorkSheet.PageSetup.Zoom = false;
+                MyWorkSheet.PageSetup.FitToPagesWide = 1;
+                MyWorkSheet.PageSetup.FitToPagesTall = false;
                 MyWorkSheet.PrintPreview();
+                MyExcel.Quit();
             }
             catch (Exception ex)
             { }
