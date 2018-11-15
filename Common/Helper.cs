@@ -147,7 +147,7 @@ namespace MyCommunity.Common
         {
             try
             {
-                ApplicationClass MyExcel;
+                Microsoft.Office.Interop.Excel.Application MyExcel;
                 Workbooks MyWorkBooks;
                 Workbook MyWorkBook;
                 Worksheet MyWorkSheet;
@@ -155,7 +155,7 @@ namespace MyCommunity.Common
                 Range MyRange;
                 Object[,] MyData = new Object[500, 35];
                 int i, j;
-                MyExcel = new ApplicationClass();
+                MyExcel = new Microsoft.Office.Interop.Excel.Application();
                 MyExcel.Visible = true;
                 if (MyExcel == null)
                 {
