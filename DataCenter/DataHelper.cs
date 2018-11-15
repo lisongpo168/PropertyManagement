@@ -28,6 +28,11 @@ namespace MyCommunity
             return dt;
         }
 
+        public static void CommitUpdate()
+        {
+            UpdateOrDeleteRecord("commit");
+        }
+
         public static void UpdateOrDeleteRecord(string query)
         {
             String conStr = global::MyCommunity.Properties.Settings.Default.DBCommunityConnectionString;
