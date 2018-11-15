@@ -323,6 +323,80 @@ INSERT INTO `楼栋信息` VALUES ('未来星一幢','西南','4个单元','18�
 UNLOCK TABLES;
 
 --
+-- Table structure for table `水电气费`
+--
+
+DROP TABLE IF EXISTS `水电气费`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `水电气费` (
+  `自动编号` int(11) NOT NULL AUTO_INCREMENT,
+  `楼栋名称` varchar(30) DEFAULT NULL,
+  `业主编号` varchar(30) DEFAULT NULL,
+  `业主姓名` varchar(30) DEFAULT NULL,
+  `计费年份` int(11) DEFAULT NULL,
+  `计费月份` int(11) DEFAULT NULL,
+  `费用类型` varchar(30) DEFAULT NULL,
+  `表编号` varchar(30) DEFAULT NULL,
+  `表底数` float DEFAULT NULL,
+  `表止数` float DEFAULT NULL,
+  `表用量` float DEFAULT NULL,
+  `计费单价` float DEFAULT NULL,
+  `应交金额` float DEFAULT NULL,
+  `登记标志` varchar(10) DEFAULT NULL,
+  `费用状态` varchar(10) DEFAULT NULL,
+  `收据编号` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`自动编号`),
+  KEY `FK_水电气费_业主信息_idx` (`业主编号`),
+  CONSTRAINT `FK_水电气费_业主信息` FOREIGN KEY (`业主编号`) REFERENCES `业主信息` (`业主编号`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=gbk;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `水电气费`
+--
+
+LOCK TABLES `水电气费` WRITE;
+/*!40000 ALTER TABLE `水电气费` DISABLE KEYS */;
+INSERT INTO `水电气费` VALUES (7,'未来星一幢','2-203','杰奎琳',2010,1,'水费','10021',0,53,53,2.25,119.25,'完成登记','已交费','SDQ20181115173717'),(8,'未来星一幢','3-102','李三哥',2010,1,'水费','10022',2,34,32,2.25,72,'完成登记','未交费',NULL),(10,'未来星一幢','2-203','杰奎琳',2010,2,'水费','10021',53,60,7,2.25,15.75,'完成登记','已交费','SDQ20181115173717'),(11,'未来星一幢','3-102','李三哥',2010,2,'水费','10022',34,46,12,2.25,27,'完成登记','未交费',NULL),(16,'致敬园1号楼','1-502','赵六',2009,12,'电费','1001',2,18,16,0.53,8.48,'完成登记','未交费',NULL),(17,'致敬园1号楼','6-606','牛红刚',2009,12,'电费','1002',1,68,67,0.53,35.51,'完成登记','未交费',NULL),(19,'致敬园1号楼','1-502','赵六',2010,1,'电费','1001',18,65,47,0.53,24.91,'完成登记','未交费',NULL),(20,'致敬园1号楼','6-606','牛红刚',2010,1,'电费','1002',68,83,15,0.53,7.95,'完成登记','未交费',NULL);
+/*!40000 ALTER TABLE `水电气费` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `物管费用`
+--
+
+DROP TABLE IF EXISTS `物管费用`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `物管费用` (
+  `自动编号` int(11) NOT NULL AUTO_INCREMENT,
+  `楼栋名称` varchar(30) DEFAULT NULL,
+  `业主编号` varchar(30) DEFAULT NULL,
+  `业主姓名` varchar(30) DEFAULT NULL,
+  `计费年份` int(11) DEFAULT NULL,
+  `计费月份` int(11) DEFAULT NULL,
+  `建筑面积` float DEFAULT NULL,
+  `套内面积` float DEFAULT NULL,
+  `计费单价` float DEFAULT NULL,
+  `应交金额` float DEFAULT NULL,
+  `登记标志` varchar(10) DEFAULT NULL,
+  `费用状态` varchar(10) DEFAULT NULL,
+  `收据编号` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`自动编号`)
+) ENGINE=InnoDB DEFAULT CHARSET=gbk;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `物管费用`
+--
+
+LOCK TABLES `物管费用` WRITE;
+/*!40000 ALTER TABLE `物管费用` DISABLE KEYS */;
+/*!40000 ALTER TABLE `物管费用` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `突发事件`
 --
 
@@ -349,6 +423,36 @@ LOCK TABLES `突发事件` WRITE;
 /*!40000 ALTER TABLE `突发事件` DISABLE KEYS */;
 INSERT INTO `突发事件` VALUES ('TF181114171317','2018-11-14','说到底','阿斯顿速度','阿斯顿','阿斯打扫','阿斯顿速度'),('TF181114171342','2018-11-14','地方官','颂德歌功公共','滴滴答答得到','顶顶顶顶顶','古古怪怪');
 /*!40000 ALTER TABLE `突发事件` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `费用收据`
+--
+
+DROP TABLE IF EXISTS `费用收据`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `费用收据` (
+  `收据编号` varchar(50) NOT NULL,
+  `收款日期` date DEFAULT NULL,
+  `交款人员` varchar(30) DEFAULT NULL,
+  `收款金额` float DEFAULT NULL,
+  `收款形式` varchar(30) DEFAULT NULL,
+  `收款人员` varchar(30) DEFAULT NULL,
+  `收款事由` varchar(50) DEFAULT NULL,
+  `补充说明` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`收据编号`)
+) ENGINE=InnoDB DEFAULT CHARSET=gbk;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `费用收据`
+--
+
+LOCK TABLES `费用收据` WRITE;
+/*!40000 ALTER TABLE `费用收据` DISABLE KEYS */;
+INSERT INTO `费用收据` VALUES ('SDQ20181115173717','2018-11-15','杰奎琳',135,'现金','管理员','交水电气费','暂无');
+/*!40000 ALTER TABLE `费用收据` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -422,4 +526,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-14 17:14:47
+-- Dump completed on 2018-11-15 17:39:53
