@@ -1,6 +1,7 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -143,65 +144,36 @@ namespace MyCommunity.Common
             }
         }
 
-        public static void PrintGridView(System.Data.DataTable dtData, string title)
+        public static string Obj2String(Object obj)
         {
-            try
+            return obj != null ? obj.ToString() : string.Empty;
+        }
+
+        public static short Obj2Int(Object obj)
+        {
+            short value = 0;
+            if (obj != null)
             {
-                Microsoft.Office.Interop.Excel.Application MyExcel;
-                Workbooks MyWorkBooks;
-                Workbook MyWorkBook;
-                Worksheet MyWorkSheet;
-                char MyColumns;
-                Range MyRange;
-                Object[,] MyData = new Object[500, 35];
-                int i, j;
-                MyExcel = new Microsoft.Office.Interop.Excel.Application();
-                MyExcel.Visible = true;
-                if (MyExcel == null)
-                {
-                    new MsgBoxForm("提示", "Excel程序无法启动！").ShowDialog();
-                    return;
-                }
-                MyWorkBooks = MyExcel.Workbooks;
-                MyWorkBook = MyWorkBooks.Add(Missing.Value);
-                MyWorkSheet = (Worksheet)MyWorkBook.Worksheets[1];
-                MyColumns = (char)(dtData.Columns.Count + 64);
-                MyRange = MyWorkSheet.get_Range("A5", MyColumns.ToString() + "5");
-                int Count = 0;
-                for (int m = 0; m < dtData.Columns.Count; m++)
-                {
-                    MyData[0, Count] = dtData.Columns[m].ColumnName;
-                    Count = Count + 1;
-                }
-                j = 1;
-                //输出数据库记录
-                foreach (System.Data.DataRow MyRow in dtData.Rows)
-                {
-                    for (i = 0; i < dtData.Columns.Count; i++)
-                    {
-                        MyData[j, i] = MyRow[i].ToString();
-                    }
-                    j++;
-                }
-                MyRange = MyRange.get_Resize(dtData.Rows.Count + 1, dtData.Columns.Count);
-                MyRange.Borders.LineStyle = 1;
-                MyRange.Value2 = MyData;
-                MyRange.EntireColumn.AutoFit();
-                MyWorkSheet.Cells[2, 2] = title;
-                Range MyRange22 = MyWorkSheet.get_Range("B2", "B2");
-                MyRange22.Font.Bold = true;
-                MyRange22.Font.Size = "20";
-                MyWorkSheet.Cells[4, 1] = "打印时间：" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                MyWorkSheet.PageSetup.LeftMargin = 0.1;
-                MyWorkSheet.PageSetup.RightMargin = 0.1;
-                MyWorkSheet.PageSetup.Zoom = false;
-                MyWorkSheet.PageSetup.FitToPagesWide = 1;
-                MyWorkSheet.PageSetup.FitToPagesTall = false;
-                MyWorkSheet.PrintPreview();
-                MyExcel.Quit();
+                Int16.TryParse(obj.ToString(), out value);
             }
-            catch (Exception ex)
-            { }
+            return value;
+        }
+
+        public static double Obj2Double(Object obj)
+        {
+            double value = 0;
+            if (obj != null)
+            {
+                double.TryParse(obj.ToString(), out value);
+            }
+            return value;
+        }
+
+        public static double String2Double(string str)
+        {
+            double value = 0;
+            double.TryParse(str, out value);
+            return value;
         }
     }
 }
