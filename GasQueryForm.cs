@@ -102,8 +102,8 @@ namespace MyCommunity
         private void 打印Button_Click(object sender, EventArgs e)
         {//打印水电气费信息
             string title = this.MyCommunity + "水电气费信息表";
-            if (printDialog.ShowDialog() != DialogResult.OK)
-                return;
+            //if (printDialog.ShowDialog() != DialogResult.OK)
+            //    return;
             printDocument.DocumentName = title;
             printDocument.PrinterSettings = printDialog.PrinterSettings;
             printDocument.DefaultPageSettings = printDialog.PrinterSettings.DefaultPageSettings;

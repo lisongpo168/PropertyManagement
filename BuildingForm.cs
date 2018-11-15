@@ -98,8 +98,8 @@ namespace MyCommunity
         private void 打印ToolStripButton_Click(object sender, EventArgs e)
         {//打印楼栋信息
             string title = this.MyCommunity + "楼栋信息表";
-            if (printDialog.ShowDialog() != DialogResult.OK)
-                return;
+            //if (printDialog.ShowDialog() != DialogResult.OK)
+            //    return;
             printDocument.DocumentName = title;
             printDocument.PrinterSettings = printDialog.PrinterSettings;
             printDocument.DefaultPageSettings = printDialog.PrinterSettings.DefaultPageSettings;
