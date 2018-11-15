@@ -23,7 +23,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -89,6 +89,7 @@
     <Compile Include="CommonRepairForm.Designer.cs">
       <DependentUpon>CommonRepairForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\DataGridViewPrinter.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\MsgBoxForm.cs">
       <SubType>Form</SubType>

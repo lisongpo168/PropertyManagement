@@ -11,11 +11,13 @@ using Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using Microsoft.Office.Core;
 using MyCommunity.Common;
+using System.Drawing.Printing;
 namespace MyCommunity
 {
     public partial class CommonPropertyForm : Form
     {
         private System.Data.DataTable dtData = null;
+        private DataGridViewPrinter print = null;
         public CommonPropertyForm()
         {
             InitializeComponent();
@@ -66,7 +68,17 @@ namespace MyCommunity
         }
         private void 打印ToolStripButton_Click(object sender, EventArgs e)
         {//打印公共财产信息
-            Helper.PrintGridView(dtData, this.MyCommunity + "公共财产信息表");
+            string title = this.MyCommunity + "公共财产信息表";
+            if (printDialog.ShowDialog() != DialogResult.OK)
+                return;
+            printDocument.DocumentName = title;
+            printDocument.PrinterSettings = printDialog.PrinterSettings;
+            printDocument.DefaultPageSettings = printDialog.PrinterSettings.DefaultPageSettings;
+            printDocument.DefaultPageSettings.Margins = new Margins(15, 15, 15, 15);
+            print = new DataGridViewPrinter(this.公共财产DataGridView, printDocument, title);
+            PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+            printPreviewDialog.Document = printDocument;
+            printPreviewDialog.ShowDialog();
         }
 
         private void SaveNewCommonProperty(string query)
@@ -127,6 +139,19 @@ namespace MyCommunity
                 string query = string.Format("delete from 公共财产 where 财产编号='{0}' and 财产名称='{1}'", propertyNo, propertyName);
                 SaveNewCommonProperty(query);
                 SynCommonProperty();
+            }
+        }
+
+        private void printDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            try
+            {
+                bool more = print.DrawDataGridView(e.Graphics);
+                if (more == true)
+                    e.HasMorePages = true;
+            }
+            catch (Exception ex)
+            {
             }
         }
     }

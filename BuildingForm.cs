@@ -8,11 +8,13 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 using MyCommunity.Common;
+using System.Drawing.Printing;
 namespace MyCommunity
 {
     public partial class BuildingForm : Form
     {
         private System.Data.DataTable dtData = null;
+        private DataGridViewPrinter print = null;
         public BuildingForm()
         {
             InitializeComponent();
@@ -90,13 +92,22 @@ namespace MyCommunity
         }
         private void BuildingForm_Load(object sender, EventArgs e)
         {
-            // TODO: 这行代码将数据加载到表“dBCommunityDataSet.楼栋信息”中
-            //this.楼栋信息TableAdapter.Fill(this.dBCommunityDataSet.楼栋信息);     
+            // TODO: 这行代码将数据加载到表“dBCommunityDataSet.楼栋信息”中   
             SynBuilding();
         }
         private void 打印ToolStripButton_Click(object sender, EventArgs e)
         {//打印楼栋信息
-            Helper.PrintGridView(dtData, this.MyCommunity + "楼栋信息表");
+            string title = this.MyCommunity + "楼栋信息表";
+            if (printDialog.ShowDialog() != DialogResult.OK)
+                return;
+            printDocument.DocumentName = title;
+            printDocument.PrinterSettings = printDialog.PrinterSettings;
+            printDocument.DefaultPageSettings = printDialog.PrinterSettings.DefaultPageSettings;
+            printDocument.DefaultPageSettings.Margins = new Margins(15, 15, 15, 15);
+            print = new DataGridViewPrinter(this.楼栋信息DataGridView, printDocument, title);
+            PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+            printPreviewDialog.Document = printDocument;
+            printPreviewDialog.ShowDialog();
         }
 
         private void 楼栋信息DataGridView_SelectionChanged(object sender, EventArgs e)
@@ -127,6 +138,19 @@ namespace MyCommunity
                 string query = string.Format("delete from 楼栋信息 where 楼栋名称='{0}'", buildName);
                 SaveNewBuilding(query);
                 SynBuilding();
+            }
+        }
+
+        private void printDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            try
+            {
+                bool more = print.DrawDataGridView(e.Graphics);
+                if (more == true)
+                    e.HasMorePages = true;
+            }
+            catch (Exception ex)
+            {
             }
         }     
     }

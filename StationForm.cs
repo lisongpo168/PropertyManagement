@@ -12,11 +12,13 @@ using Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using Microsoft.Office.Core;
 using MyCommunity.Common;
+using System.Drawing.Printing;
 namespace MyCommunity
 {
     public partial class StationForm : Form
     {
         private System.Data.DataTable dtData = null;
+        private DataGridViewPrinter print = null;
         public StationForm()
         {
             InitializeComponent();
@@ -133,7 +135,17 @@ namespace MyCommunity
 
         private void 打印ToolStripButton_Click(object sender, EventArgs e)
         {//打印车位使用信息
-            Helper.PrintGridView(dtData, this.MyCommunity + "车位使用信息表");
+            string title = this.MyCommunity + "车位使用信息表";
+            if (printDialog.ShowDialog() != DialogResult.OK)
+                return;
+            printDocument.DocumentName = title;
+            printDocument.PrinterSettings = printDialog.PrinterSettings;
+            printDocument.DefaultPageSettings = printDialog.PrinterSettings.DefaultPageSettings;
+            printDocument.DefaultPageSettings.Margins = new Margins(15, 15, 15, 15);
+            print = new DataGridViewPrinter(this.车位使用DataGridView, printDocument, title);
+            PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+            printPreviewDialog.Document = printDocument;
+            printPreviewDialog.ShowDialog();
         }
 
         private void bindingNavigatorDeleteItem_Click(object sender, EventArgs e)
@@ -176,6 +188,19 @@ namespace MyCommunity
             }
             if (currRow != null)
                 this.bindingNavigatorDeleteItem.Enabled = true;
+        }
+
+        private void printDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            try
+            {
+                bool more = print.DrawDataGridView(e.Graphics);
+                if (more == true)
+                    e.HasMorePages = true;
+            }
+            catch (Exception ex)
+            {
+            }
         }
     }
 }

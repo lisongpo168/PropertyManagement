@@ -81,6 +81,8 @@
             this.当前状态DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.保管人员DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.补充说明DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.printDocument = new System.Drawing.Printing.PrintDocument();
+            this.printDialog = new System.Windows.Forms.PrintDialog();
             财产编号Label = new System.Windows.Forms.Label();
             财产名称Label = new System.Windows.Forms.Label();
             规格型号Label = new System.Windows.Forms.Label();
@@ -544,6 +546,14 @@
             this.补充说明DataGridViewTextBoxColumn.Name = "补充说明DataGridViewTextBoxColumn";
             this.补充说明DataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // printDocument
+            // 
+            this.printDocument.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument_PrintPage);
+            // 
+            // printDialog
+            // 
+            this.printDialog.UseEXDialog = true;
+            // 
             // CommonPropertyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -628,6 +638,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn 保管人员DataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn 补充说明DataGridViewTextBoxColumn;
         private System.Windows.Forms.ToolStripButton 打印ToolStripButton;
+        private System.Drawing.Printing.PrintDocument printDocument;
+        private System.Windows.Forms.PrintDialog printDialog;
 
 
     }
