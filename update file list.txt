@@ -1,14 +1,25 @@
-20181115
+20181116
 
-GasPaymentForm.cs
-GasPaymentForm.Designer.cs
-GasQueryForm.cs
-GasQueryForm.Designer.cs
-StationForm.cs
-StationForm.Designer.cs
-GasRegisterForm.cs
-GasRegisterForm.Designer.cs
+CommunityForm.cs
+CommunityForm.Designer.cs
+OperatorForm.cs
+OperatorForm.Designer.cs
+MainForm.cs
+ChangeUserPasswordForm.cs
+ChangeUserPasswordForm.Designer.cs
+LoginForm.cs
+ReportChargeForm.cs Design
 BuildingForm.cs
-BuildingForm.Designer.cs
 CommonPropertyForm.cs
-CommonPropertyForm.Designer.cs
+GasQueryForm.cs
+ManageQueryForm.cs design
+ReportCommonRepairForm.cs design
+ReportComplainForm.cs design
+ReportOwnerForm.cs design
+ReportOwnerRepairForm.cs design
+StationForm.cs
+OtherPaymentForm.cs dsign
+GasPaymentForm.cs
+ManagePaymentForm.cs design
+GasRegisterForm.cs
+ManageRegisterForm.cs design
