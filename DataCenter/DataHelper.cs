@@ -33,8 +33,9 @@ namespace MyCommunity
             UpdateOrDeleteRecord("commit");
         }
 
-        public static void UpdateOrDeleteRecord(string query)
+        public static int UpdateOrDeleteRecord(string query)
         {
+            int nRet = 0;
             String conStr = global::MyCommunity.Properties.Settings.Default.DBCommunityConnectionString;
             DataTable dt = new DataTable();
             using (MySqlConnection conn = new MySqlConnection(conStr))
@@ -44,9 +45,10 @@ namespace MyCommunity
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = query;
-                    cmd.ExecuteNonQuery();
+                    nRet = cmd.ExecuteNonQuery();
                 }
             }
+            return nRet;
         }
     }
 }
