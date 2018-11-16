@@ -157,6 +157,7 @@ class DataGridViewPrinter
                     tmpSize = g.MeasureString(TheDataGridView.Rows[j].Cells[i].EditedFormattedValue.ToString(), tmpFont);
                     if (tmpSize.Width > tmpWidth)
                         tmpWidth = tmpSize.Width;
+                    tmpWidth = tmpWidth > 200 ? 200 : tmpWidth;
                 }
                 if (TheDataGridView.Columns[i].Visible)
                     TheDataGridViewWidth += tmpWidth;

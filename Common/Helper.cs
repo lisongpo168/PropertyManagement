@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -90,6 +93,22 @@ namespace MyCommunity.Common
             catch (Exception ex) { }
         }
 
+        public static void SetCheckBoxCtrlValue(Control.ControlCollection controls, string name, string value)
+        {
+            try
+            {
+                name = name + "CheckBox";
+                if (controls.Find(name, false).Count() > 0)
+                {
+                    if(value.StartsWith("1"))
+                        ((System.Windows.Forms.CheckBox)(controls.Find(name, false)[0])).Checked = true;
+                    else
+                        ((System.Windows.Forms.CheckBox)(controls.Find(name, false)[0])).Checked = false;
+                }
+            }
+            catch (Exception ex) { }
+        }
+
         public static string GetDateCtrlValue(Control.ControlCollection controls, string name)
         {
             string value = string.Empty;
@@ -144,6 +163,25 @@ namespace MyCommunity.Common
             }
         }
 
+        public static string GetCheckBoxCtrlValue(Control.ControlCollection controls, string name)
+        {
+            string value = string.Empty;
+            try
+            {
+                name = name + "CheckBox";
+                if (controls.Find(name, false).Count() > 0)
+                {
+                    bool bCheck = ((System.Windows.Forms.CheckBox)(controls.Find(name, false)[0])).Checked;
+                    value = bCheck ? "1" : "0";
+                }
+                return value;
+            }
+            catch (Exception ex)
+            {
+                return value;
+            }
+        }
+
         public static string Obj2String(Object obj)
         {
             return obj != null ? obj.ToString() : string.Empty;
@@ -174,6 +212,53 @@ namespace MyCommunity.Common
             double value = 0;
             double.TryParse(str, out value);
             return value;
+        }
+
+        public static string EncodePassword(string text)
+        {
+            byte[] buffer = Encoding.UTF8.GetBytes(text);
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Compress, true))
+                {
+                    gZipStream.Write(buffer, 0, buffer.Length);
+                }
+
+                memoryStream.Position = 0;
+
+                var compressedData = new byte[memoryStream.Length];
+                memoryStream.Read(compressedData, 0, compressedData.Length);
+
+                var gZipBuffer = new byte[compressedData.Length + 4];
+                Buffer.BlockCopy(compressedData, 0, gZipBuffer, 4, compressedData.Length);
+                Buffer.BlockCopy(BitConverter.GetBytes(buffer.Length), 0, gZipBuffer, 0, 4);
+                return Convert.ToBase64String(gZipBuffer);
+            }
+        }
+
+        /// <summary>
+        /// Decompresses the string.
+        /// </summary>
+        /// <param name="compressedText">The compressed text.</param>
+        /// <returns></returns>
+        public static string DecodePassword(string compressedText)
+        {
+            byte[] gZipBuffer = Convert.FromBase64String(compressedText);
+            using (var memoryStream = new MemoryStream())
+            {
+                int dataLength = BitConverter.ToInt32(gZipBuffer, 0);
+                memoryStream.Write(gZipBuffer, 4, gZipBuffer.Length - 4);
+
+                var buffer = new byte[dataLength];
+
+                memoryStream.Position = 0;
+                using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
+                {
+                    gZipStream.Read(buffer, 0, buffer.Length);
+                }
+
+                return Encoding.UTF8.GetString(buffer);
+            }
         }
     }
 }
