@@ -46,7 +46,7 @@ namespace MyCommunity
             string v_楼栋名称 = this.楼栋名称ToolStripComboBox.Text.Trim();
             if (string.IsNullOrEmpty(v_计费年份) || string.IsNullOrEmpty(v_计费月份) || string.IsNullOrEmpty(v_费用类型) || string.IsNullOrEmpty(v_楼栋名称))
             {
-                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型， 楼栋名称等信息！").ShowDialog();
+                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型，楼栋名称等信息！").ShowDialog();
                 return;
             }
             SynGasRegisterInfo(v_计费年份, v_计费月份, v_费用类型, v_楼栋名称, "正在登记");
@@ -60,7 +60,7 @@ namespace MyCommunity
             string v_楼栋名称 = this.楼栋名称ToolStripComboBox.Text.Trim();
             if (string.IsNullOrEmpty(v_计费年份) || string.IsNullOrEmpty(v_计费月份) || string.IsNullOrEmpty(v_费用类型) || string.IsNullOrEmpty(v_楼栋名称))
             {
-                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型， 楼栋名称等信息！").ShowDialog();
+                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型，楼栋名称等信息！").ShowDialog();
                 return;
             }
 
@@ -96,20 +96,20 @@ namespace MyCommunity
             string v_楼栋名称 = this.楼栋名称ToolStripComboBox.Text.Trim();
             if (string.IsNullOrEmpty(v_计费年份) || string.IsNullOrEmpty(v_计费月份) || string.IsNullOrEmpty(v_费用类型) || string.IsNullOrEmpty(v_楼栋名称))
             {
-                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型， 楼栋名称等信息！").ShowDialog();
+                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型，楼栋名称等信息！").ShowDialog();
                 return;
             }
-            if (new MsgBoxForm("提示", "现在将新增指定月份的水电气费数据，是否继续？", true).ShowDialog() != DialogResult.OK)
+            if (new MsgBoxForm("提示", string.Format("现在将新增{0}{1}年{2}月的{3}数据，是否继续？", v_楼栋名称, v_计费年份, v_计费月份, v_费用类型), true).ShowDialog() != DialogResult.OK)
             {
                 return;
             }
-            string query = string.Format("select * from 水电气费 where 计费年份={0} and 计费月份={1} and 费用类型='{2}' and 楼栋名称='{3}'", v_计费年份, v_计费月份, v_费用类型, v_楼栋名称);
+            string query = string.Format("select 自动编号 from 水电气费 where 计费年份={0} and 计费月份={1} and 费用类型='{2}' and 楼栋名称='{3}'", v_计费年份, v_计费月份, v_费用类型, v_楼栋名称);
             DataTable dt = DataHelper.GetDataTable(query);
             if (dt.Rows.Count == 0)
             {//插入新月份费用的业主基本信息
                 string insertQuery = "INSERT INTO 水电气费 (楼栋名称,业主编号,业主姓名) SELECT 楼栋名称,业主编号,业主姓名 FROM 业主信息 WHERE (业主编号 NOT IN (SELECT 业主编号 FROM 迁出信息)) AND (楼栋名称='" + v_楼栋名称 + "')";
                 DataHelper.UpdateOrDeleteRecord(insertQuery);
-                string updateQuery = "UPDATE 水电气费 SET 登记标志='正在登记',费用类型='" + v_费用类型 + "',计费年份=" + v_计费年份 + ",计费月份=" + v_计费月份 + " WHERE 登记标志 IS NULL";
+                string updateQuery = "UPDATE 水电气费 SET 登记标志='正在登记',费用类型='" + v_费用类型 + "',计费年份=" + v_计费年份 + ",计费月份=" + v_计费月份 + " WHERE 登记标志 IS NULL AND (楼栋名称='" + v_楼栋名称 + "')";
                 DataHelper.UpdateOrDeleteRecord(updateQuery);
                 int MyLastMonth = Convert.ToInt16(v_计费月份) - 1;
                 int MyLastYear = Convert.ToInt16(v_计费年份);
@@ -125,7 +125,6 @@ namespace MyCommunity
                 {
                     string My楼栋名称 = dRow[0].ToString();
                     string My业主编号 = dRow[1].ToString();
-                    string My业主姓名 = dRow[2].ToString();
                     string My计费年份 = dRow[3].ToString();
                     string My计费月份 = dRow[4].ToString();
                     string My费用类型 = dRow[5].ToString();
@@ -154,16 +153,17 @@ namespace MyCommunity
             string v_楼栋名称 = this.楼栋名称ToolStripComboBox.Text.Trim();
             if (string.IsNullOrEmpty(v_计费年份) || string.IsNullOrEmpty(v_计费月份) || string.IsNullOrEmpty(v_费用类型) || string.IsNullOrEmpty(v_楼栋名称))
             {
-                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型， 楼栋名称等信息！").ShowDialog();
+                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型，楼栋名称等信息！").ShowDialog();
                 return;
             }
-            if (new MsgBoxForm("提示", "登记水电气费数据意味着本月正在登记的数据将无法再修改，是否继续？", true).ShowDialog() != DialogResult.OK)
+
+            if (new MsgBoxForm("提示", string.Format("现在将登记{0}{1}年{2}月的{3}数据，登记后本月正在登记的数据将无法再修改，是否继续？", v_楼栋名称, v_计费年份, v_计费月份, v_费用类型), true).ShowDialog() != DialogResult.OK)
             {
                 return;
             }
             string query = "UPDATE 水电气费 SET 登记标志='完成登记',费用状态='未交费' WHERE 计费年份=" + v_计费年份 + " AND 计费月份=" + v_计费月份 + " AND 费用类型='" + v_费用类型 + "' AND 楼栋名称='" + v_楼栋名称 + "'";
             DataHelper.UpdateOrDeleteRecord(query);
-            查询ToolStripButton_Click(null, null);
+            SynGasRegisterInfo(v_计费年份, v_计费月份, v_费用类型, v_楼栋名称, "正在登记");
             new MsgBoxForm("提示", "登记成功！").ShowDialog();
         }
 
@@ -184,7 +184,7 @@ namespace MyCommunity
             string v_楼栋名称 = this.楼栋名称ToolStripComboBox.Text.Trim();
             if (string.IsNullOrEmpty(v_计费年份) || string.IsNullOrEmpty(v_计费月份) || string.IsNullOrEmpty(v_费用类型) || string.IsNullOrEmpty(v_楼栋名称))
             {
-                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型， 楼栋名称等信息！").ShowDialog();
+                new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，费用类型，楼栋名称等信息！").ShowDialog();
                 return;
             }
             string tipInfo = string.Format("{0}{1}年{2}月的{3}", v_楼栋名称, v_计费年份, v_计费月份, v_费用类型);

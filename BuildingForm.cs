@@ -103,7 +103,7 @@ namespace MyCommunity
             printDocument.DocumentName = title;
             printDocument.PrinterSettings = printDialog.PrinterSettings;
             printDocument.DefaultPageSettings = printDialog.PrinterSettings.DefaultPageSettings;
-            printDocument.DefaultPageSettings.Margins = new Margins(15, 15, 15, 15);
+            printDocument.DefaultPageSettings.Margins = new Margins(10, 10, 20, 20);
             print = new DataGridViewPrinter(this.楼栋信息DataGridView, printDocument, title);
             PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
             printPreviewDialog.Document = printDocument;

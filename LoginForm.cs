@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.IO;
 using System.Security.Principal;
 using System.Data.SqlClient;
+using MyCommunity.Common;
 namespace MyCommunity
 {
     public partial class LoginForm : Form
@@ -24,7 +25,8 @@ namespace MyCommunity
         {//从app.config文件中读取数据库连接字符串信息
             string MyUserName = this.用户名称TextBox.Text;
             string MyPassword = this.用户密码TextBox.Text;
-            string query = string.Format("Select * From 操作用户 Where 用户名称='{0}' AND 用户密码='{1}'", MyUserName, MyPassword);
+            string encodedPass = Helper.EncodePassword(MyPassword);
+            string query = string.Format("Select * From 操作用户 Where 用户名称='{0}' AND 用户密码='{1}'", MyUserName, encodedPass);
             DataTable dt = DataHelper.GetDataTable(query);
             int MyCount = dt.Rows.Count;
             if (MyCount == 1)

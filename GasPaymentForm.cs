@@ -78,7 +78,7 @@ namespace MyCommunity
         private void 新增Button_Click(object sender, EventArgs e)
         {//新增收据信息
             this.收据编号TextBox.Text = string.Format("SDQ{0}", DateTime.Now.ToString("yyyyMMddHHmmss"));
-            this.收款日期DateTimePicker.Text  = DateTime.Now.ToString("yyyy-MM-dd");
+            this.收款日期DateTimePicker.Value  = DateTime.Now.Date;
             this.收款人员TextBox.Text  = this.MyOperator;
             this.收款金额TextBox.Text = "0";
             dtData.Rows.Clear();
@@ -207,6 +207,7 @@ namespace MyCommunity
                     DataHelper.UpdateOrDeleteRecord(query);
                 }
                 DataHelper.CommitUpdate();
+                new MsgBoxForm("提示", "保存成功！").ShowDialog();
             }
             catch (Exception ex)
             { }

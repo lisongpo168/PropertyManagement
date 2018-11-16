@@ -6,11 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
-
-using Microsoft.Office.Interop.Excel;
 using System.Reflection;
-using Microsoft.Office.Core;
 using MyCommunity.Common;
 using System.Drawing.Printing;
 namespace MyCommunity
@@ -141,7 +137,7 @@ namespace MyCommunity
             printDocument.DocumentName = title;
             printDocument.PrinterSettings = printDialog.PrinterSettings;
             printDocument.DefaultPageSettings = printDialog.PrinterSettings.DefaultPageSettings;
-            printDocument.DefaultPageSettings.Margins = new Margins(15, 15, 15, 15);
+            printDocument.DefaultPageSettings.Margins = new Margins(10, 10, 20, 20);
             print = new DataGridViewPrinter(this.车位使用DataGridView, printDocument, title);
             PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
             printPreviewDialog.Document = printDocument;

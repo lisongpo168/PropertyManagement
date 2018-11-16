@@ -28,6 +28,7 @@ namespace MyCommunity
         private string MyOperator = "";
         private string MyCommunity;
         private string MyIcon;
+        private string MyPrintIcon;
         private void MainForm_Load(object sender, EventArgs e)
         {
             try
@@ -102,6 +103,7 @@ namespace MyCommunity
                 MyCommunity = (String)MyTable.Rows[0]["小区名称"];
                 MyBgPhotoShow = Application.StartupPath + "\\Data\\" + (String)MyTable.Rows[0]["背景图像"];
                 MyIcon = Application.StartupPath + "\\Data\\" + (String)MyTable.Rows[0]["标志图标"];
+                MyPrintIcon = Application.StartupPath + "\\Data\\print.ico";
             }
             catch (Exception ex)
             {
@@ -433,6 +435,7 @@ namespace MyCommunity
         {
             ManageQueryForm MyDlg = new ManageQueryForm();
             MyDlg.MyCommunity = this.MyCommunity;
+            MyDlg.MyPrintIcon = this.MyPrintIcon;
             MyDlg.ShowDialog();
         }
         private void 物管费用交纳ToolStripMenuItem_Click(object sender, EventArgs e)
