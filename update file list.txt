@@ -1,25 +1,15 @@
-20181116
+20181119
+DevComponents.DotNetBar.Controls.ComboBoxEx
+DevComponents.DotNetBar.ButtonX
+DevComponents.DotNetBar.Controls.DataGridViewX
+DevComponents.DotNetBar.Office2007Form
+DevComponents.Editors.DateTimeAdv.DateTimeInput
+DevComponents.DotNetBar.Controls.RichTextBoxEx
+DevComponents.Editors.DoubleInput
+DevComponents.Editors.IntegerInput
 
-CommunityForm.cs
-CommunityForm.Designer.cs
-OperatorForm.cs
-OperatorForm.Designer.cs
-MainForm.cs
-ChangeUserPasswordForm.cs
-ChangeUserPasswordForm.Designer.cs
-LoginForm.cs
-ReportChargeForm.cs Design
-BuildingForm.cs
-CommonPropertyForm.cs
-GasQueryForm.cs
-ManageQueryForm.cs design
-ReportCommonRepairForm.cs design
-ReportComplainForm.cs design
-ReportOwnerForm.cs design
-ReportOwnerRepairForm.cs design
-StationForm.cs
-OtherPaymentForm.cs dsign
-GasPaymentForm.cs
-ManagePaymentForm.cs design
-GasRegisterForm.cs
-ManageRegisterForm.cs design
+<appSettings>
+    <add key="DBConStr" value="server=localhost;port=3306;user=root;password={0};database=wuyemgrsys;sslmode=none;Character Set=utf8;" />
+    <add key="DBPassword" value="CwAAAB+LCAAAAAAABADzKS4wNbQwMbRQUQEAaIG9igsAAAA=" />
+    <add key="SecurityId" value="HwAAAB+LCAAAAAAABABzcnN1cnNyczMwMDA1MHM1DnfRDXd2Nosy9QuNCDMzAABJjIn9HwAAAA==" />
+  </appSettings>
