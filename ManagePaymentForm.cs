@@ -37,6 +37,7 @@ namespace MyCommunity
             manageTable.Columns.Add("套面", System.Type.GetType("System.Double"));
             manageTable.Columns.Add("单价", System.Type.GetType("System.Double"));
             manageTable.Columns.Add("金额", System.Type.GetType("System.Double"));
+            manageTable.Columns.Add("备注", System.Type.GetType("System.String"));
             this.明细DataGridView.DataSource = manageTable;
         }
 
@@ -57,7 +58,7 @@ namespace MyCommunity
             {
                 v_业主编号 = this.业主姓名ComboBox.SelectedValue.ToString();
             }
-            string query = "SELECT 自动编号, 计费年份, 计费月份, 建筑面积, 套内面积, 计费单价, 应交金额 FROM 物管费用 WHERE (业主编号 ='" + v_业主编号 + "') AND (业主姓名 ='" + v_业主姓名 + "') AND (费用状态='未交费')";
+            string query = "SELECT 自动编号, 计费年份, 计费月份, 建筑面积, 套内面积, 计费单价, 应交金额,补充说明 FROM 物管费用 WHERE (业主编号 ='" + v_业主编号 + "') AND (业主姓名 ='" + v_业主姓名 + "') AND (费用状态='未交费')";
             DataTable myTable = DataHelper.GetDataTable(query);
             this.未交DataGridView.DataSource = myTable;
             this.交款人员TextBox.Text = v_业主姓名;
@@ -84,6 +85,7 @@ namespace MyCommunity
                 dRow["套面"] = Helper.Obj2Double(this.未交DataGridView.CurrentRow.Cells[4].Value);
                 dRow["单价"] = Helper.Obj2Double(this.未交DataGridView.CurrentRow.Cells[5].Value);
                 dRow["金额"] = Helper.Obj2Double(this.未交DataGridView.CurrentRow.Cells[6].Value);
+                dRow["备注"] = Helper.Obj2String(this.未交DataGridView.CurrentRow.Cells[7].Value);
                 if (manageTable.Select("序号=" + int_序号).Length > 0)
                 {
                     new MsgBoxForm("提示", "该条费用信息已添加，请另选一条！").ShowDialog();
@@ -137,24 +139,26 @@ namespace MyCommunity
             e.Graphics.DrawLine(new Pen(Color.Black), 100, 195, 720, 195);
             e.Graphics.DrawString("补充说明：" + this.补充说明TextBox.Text, new Font("宋体", 10), Brushes.Black, 100, 200);
             e.Graphics.DrawLine(new Pen(Color.Black), 100, 220, 720, 220);
-            e.Graphics.DrawString("序号", new Font("宋体", 10), Brushes.Black, 150, 225);
-            e.Graphics.DrawString("年份", new Font("宋体", 10), Brushes.Black, 200, 225);
-            e.Graphics.DrawString("月份", new Font("宋体", 10), Brushes.Black, 280, 225);
-            e.Graphics.DrawString("建筑面积(m2)", new Font("宋体", 10), Brushes.Black, 330, 225);
-            e.Graphics.DrawString("套内面积(m2)", new Font("宋体", 10), Brushes.Black, 430, 225);
-            e.Graphics.DrawString("单价(元)", new Font("宋体", 10), Brushes.Black, 530, 225);
-            e.Graphics.DrawString("金额(元)", new Font("宋体", 10), Brushes.Black, 630, 225);
+            e.Graphics.DrawString("序号", new Font("宋体", 10), Brushes.Black, 100, 225);
+            e.Graphics.DrawString("年份", new Font("宋体", 10), Brushes.Black, 140, 225);
+            e.Graphics.DrawString("月份", new Font("宋体", 10), Brushes.Black, 180, 225);
+            e.Graphics.DrawString("建筑面积(m2)", new Font("宋体", 10), Brushes.Black, 220, 225);
+            e.Graphics.DrawString("套内面积(m2)", new Font("宋体", 10), Brushes.Black, 320, 225);
+            e.Graphics.DrawString("单价(元)", new Font("宋体", 10), Brushes.Black, 420, 225);
+            e.Graphics.DrawString("金额(元)", new Font("宋体", 10), Brushes.Black, 485, 225);
+            e.Graphics.DrawString("备注", new Font("宋体", 10), Brushes.Black, 550, 225);
             int MyPosY = 245;
             int MyID = 1;
             foreach (DataRow MyRow in this.manageTable.Rows)
             {
-                e.Graphics.DrawString(MyID.ToString(), new Font("宋体", 10), Brushes.Black, 150, MyPosY);
-                e.Graphics.DrawString(MyRow[1].ToString(), new Font("宋体", 10), Brushes.Black, 200, MyPosY);
-                e.Graphics.DrawString(MyRow[2].ToString(), new Font("宋体", 10), Brushes.Black, 280, MyPosY);
-                e.Graphics.DrawString(MyRow[3].ToString(), new Font("宋体", 10), Brushes.Black, 330, MyPosY);
-                e.Graphics.DrawString(MyRow[4].ToString(), new Font("宋体", 10), Brushes.Black, 430, MyPosY);
-                e.Graphics.DrawString(MyRow[5].ToString(), new Font("宋体", 10), Brushes.Black, 530, MyPosY);
-                e.Graphics.DrawString(MyRow[6].ToString(), new Font("宋体", 10), Brushes.Black, 630, MyPosY);
+                e.Graphics.DrawString(MyID.ToString(), new Font("宋体", 10), Brushes.Black, 100, MyPosY);
+                e.Graphics.DrawString(MyRow[1].ToString(), new Font("宋体", 10), Brushes.Black, 140, MyPosY);
+                e.Graphics.DrawString(MyRow[2].ToString(), new Font("宋体", 10), Brushes.Black, 180, MyPosY);
+                e.Graphics.DrawString(MyRow[3].ToString(), new Font("宋体", 10), Brushes.Black, 220, MyPosY);
+                e.Graphics.DrawString(MyRow[4].ToString(), new Font("宋体", 10), Brushes.Black, 320, MyPosY);
+                e.Graphics.DrawString(MyRow[5].ToString(), new Font("宋体", 10), Brushes.Black, 420, MyPosY);
+                e.Graphics.DrawString(MyRow[6].ToString(), new Font("宋体", 10), Brushes.Black, 485, MyPosY);
+                e.Graphics.DrawString(MyRow[7].ToString(), new Font("宋体", 10), Brushes.Black, 550, MyPosY);
                 MyPosY += 20;
                 MyID += 1;
             }

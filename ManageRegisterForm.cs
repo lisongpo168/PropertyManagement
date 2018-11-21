@@ -11,12 +11,43 @@ using System.Data.SqlClient;
 using MyCommunity.Common;
 namespace MyCommunity
 {
+    public class StationFeeInfo
+    {
+        public string v_车位编号 { set; get; }
+        public double v_费用金额 { set; get; }
+    }
+
     public partial class ManageRegisterForm : Form
     {
         public ManageRegisterForm()
         {
             InitializeComponent();
-        }        
+        }
+
+        private Dictionary<string, StationFeeInfo> GetStationFeeInfo(string v_楼栋名称)
+        {
+            Dictionary<string, StationFeeInfo> feeDic = new Dictionary<string, StationFeeInfo>();
+            string query = string.Format("select * from 车位使用 where 楼栋名称='{0}'", v_楼栋名称);
+            DataTable dt = DataHelper.GetDataTable(query);
+            foreach (DataRow dRow in dt.Rows)
+            {
+                StationFeeInfo feeInfo = new StationFeeInfo();
+                string v_车位编号 = Helper.Obj2String(dRow["车位编号"]);
+                string v_业主编号 = Helper.Obj2String(dRow["业主编号"]);
+                string v_业主姓名 = Helper.Obj2String(dRow["业主姓名"]);
+                double v_费用金额 = Helper.Obj2Double(dRow["费用金额"]);
+                string key = v_业主编号 + v_业主姓名;
+                if (!feeDic.ContainsKey(key))
+                    feeDic.Add(key, new StationFeeInfo() { v_车位编号 = v_车位编号, v_费用金额 = v_费用金额 });
+                else
+                {
+                    feeDic[key].v_费用金额 += v_费用金额;
+                    feeDic[key].v_车位编号 += "|" + v_车位编号;
+                }
+            }
+            return feeDic;
+        }
+
         private void ManageRegisterForm_Load(object sender, EventArgs e)
         {
             for (int i = 2009; i <= 2099; i++)
@@ -45,7 +76,7 @@ namespace MyCommunity
                 new MsgBoxForm("提示", "没有选择正确的计费年份，计费月份，楼栋名称等信息！").ShowDialog();
                 return;
             }
-
+            Dictionary<string, StationFeeInfo> stationFeeDic = GetStationFeeInfo(v_楼栋名称);
             foreach (DataGridViewRow gridViewRow in this.物管费用DataGridView.Rows)
             {
                 string v_业主编号 = Helper.GetCellValue(gridViewRow, "业主编号dataGridViewTextBoxColumn");
@@ -54,12 +85,19 @@ namespace MyCommunity
                 string v_业主姓名 = Helper.GetCellValue(gridViewRow, "业主姓名dataGridViewTextBoxColumn");
                 string v_建筑面积 = Helper.GetCellValue(gridViewRow, "建筑面积dataGridViewTextBoxColumn");
                 string v_计费单价 = Helper.GetCellValue(gridViewRow, "计费单价dataGridViewTextBoxColumn");
-                string v_表用量 = string.Empty, v_应交金额 = string.Empty;
-                float f_建筑面积, f_计费单价 = 0;
+                string v_表用量 = string.Empty, v_应交金额 = string.Empty, v_补充说明 = string.Empty;
+                float f_建筑面积, f_计费单价 = 0, f_车位费用 = 0;
                 float.TryParse(v_建筑面积, out f_建筑面积);
                 float.TryParse(v_计费单价, out f_计费单价);
-                v_应交金额 = (f_建筑面积 * f_计费单价).ToString("N2");
-                string query = "UPDATE 物管费用 SET 计费单价=" + v_计费单价 + ",应交金额=" + v_应交金额 + " WHERE 计费年份=" + v_计费年份 + 
+                string dicKey = v_业主编号 + v_业主姓名;
+                if (stationFeeDic.ContainsKey(dicKey))
+                {
+                    f_车位费用 = (float)stationFeeDic[dicKey].v_费用金额;
+                    v_补充说明 = string.Format("车位:{0} 费用:{1}", stationFeeDic[dicKey].v_车位编号, f_车位费用);
+
+                }
+                v_应交金额 = (f_建筑面积 * f_计费单价 + f_车位费用).ToString("N2");
+                string query = "UPDATE 物管费用 SET 计费单价=" + v_计费单价 + ",应交金额=" + v_应交金额 + ",补充说明='" + v_补充说明 + "' WHERE 计费年份=" + v_计费年份 + 
                     " AND 计费月份=" + v_计费月份 + " AND 楼栋名称='" + v_楼栋名称 + "' AND 业主编号='" + v_业主编号 + "' AND 业主姓名='" + v_业主姓名 + "'";
                 DataHelper.UpdateOrDeleteRecord(query);
             }
