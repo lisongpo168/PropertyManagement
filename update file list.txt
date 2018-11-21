@@ -40,6 +40,7 @@ string query = "UPDATE 水电气费 SET 登记标志='完成登记',费用状态='未交费' WHERE 
             {
                 new MsgBoxForm("提示", "登记失败，请确认是否已经保存了费用信息！").ShowDialog();
             }
+移除的bug
 
 private void RefreshDataGridViewStatus()
         {
@@ -61,6 +62,8 @@ private void RefreshDataGridViewStatus()
             }
 
 
+            e.Graphics.DrawString("收据编号：" +this.收据编号TextBox.Text + "   楼栋名称：" + this.楼栋名称ComboBox.Text, new Font("宋体", 10), Brushes.Black, 100, 145);
+            e.Graphics.DrawString("收款日期：" + this.收款日期DateTimePicker.Value.ToString("yyyy-MM-dd"), new Font("宋体", 10), Brushes.Black, 565, 145);
 
  int nFootPos = MyPosY + 45;
             nFootPos = nFootPos > 1000 ? 1000 : nFootPos;
