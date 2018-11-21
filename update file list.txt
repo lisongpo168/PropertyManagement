@@ -72,3 +72,5 @@ private void RefreshDataGridViewStatus()
             e.Graphics.DrawLine(new Pen(Color.Black, (float)3.00), 100, nFootPos + 80, 720, nFootPos + 80);
             e.Graphics.DrawString("收款人员：" + this.收款人员TextBox.Text, new Font("宋体", 10), Brushes.Black, 100, nFootPos + 88);
             e.Graphics.DrawString("打印时间：" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), new Font("宋体", 10), Brushes.Black, 500, nFootPos + 88);
+
+物管费用表 加上  ‘补充说明’  用于标识车位费用  车位管理（元/月）
