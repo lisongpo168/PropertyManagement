@@ -13,3 +13,59 @@ DevComponents.Editors.IntegerInput
     <add key="DBPassword" value="CwAAAB+LCAAAAAAABADzKS4wNbQwMbRQUQEAaIG9igsAAAA=" />
     <add key="SecurityId" value="HwAAAB+LCAAAAAAABABzcnN1cnNyczMwMDA1MHM1DnfRDXd2Nosy9QuNCDMzAABJjIn9HwAAAA==" />
   </appSettings>
+
+ 查询           string query = "SELECT 自动编号, 计费年份, 计费月份, 费用类型, 表编号, 表底数, 表止数, 表用量, 计费单价, 应交金额 FROM 水电气费 WHERE (业主编号 ='" + v_业主编号 + "') AND (费用状态='未交费') ORDER BY 计费年份,计费月份,费用类型";
+
+if (f_表底数 > f_表止数)
+                {
+                    new MsgBoxForm("提示", "表止数不能小于表底数，请重新输入！").ShowDialog();
+                    return;
+                }
+                if (f_计费单价 < 0)
+                {
+                    new MsgBoxForm("提示", "计费单价不能小于0，请重新输入！").ShowDialog();
+                    return;
+                }
+
+登记前先保存数据，
+
+string query = "UPDATE 水电气费 SET 登记标志='完成登记',费用状态='未交费' WHERE 计费年份=" + v_计费年份 + " AND 计费月份=" + v_计费月份 + " AND 费用类型='" + v_费用类型 + "' AND 楼栋名称='" + v_楼栋名称 + "'" + " AND 应交金额>=0";
+            int nRet = DataHelper.UpdateOrDeleteRecord(query);
+            if (nRet > 0)
+            {
+                SynGasRegisterInfo(v_计费年份, v_计费月份, v_费用类型, v_楼栋名称, "正在登记");
+                new MsgBoxForm("提示", "登记成功！").ShowDialog();
+            }
+            else
+            {
+                new MsgBoxForm("提示", "登记失败，请确认是否已经保存了费用信息！").ShowDialog();
+            }
+
+private void RefreshDataGridViewStatus()
+        {
+            for (int i = 0; i < this.未交DataGridView.Rows.Count; i++)
+            {
+                int int_序号 = Helper.Obj2Int(this.未交DataGridView.Rows[i].Cells[0].Value);
+                if (dtData.Select("序号=" + int_序号).Length > 0)
+                {
+                    this.未交DataGridView.Rows[i].DefaultCellStyle.BackColor = Color.LightGreen;
+                }
+            }
+        }
+
+        {//添加交款明细项目
+            if (dtData.Rows.Count >= 36)
+            {
+                new MsgBoxForm("提示", "收据打印已经到最大条数，请先打印保存后重新添加！").ShowDialog();
+                return;
+            }
+
+
+
+ int nFootPos = MyPosY + 45;
+            nFootPos = nFootPos > 1000 ? 1000 : nFootPos;
+            e.Graphics.DrawString("收款单位（盖章）：中星物业管理有限公司", new Font("宋体", 12), Brushes.Black, 370, nFootPos);
+            e.Graphics.DrawString("未来一号物业服务中心", new Font("宋体", 12), Brushes.Black, 520, nFootPos + 20);
+            e.Graphics.DrawLine(new Pen(Color.Black, (float)3.00), 100, nFootPos + 80, 720, nFootPos + 80);
+            e.Graphics.DrawString("收款人员：" + this.收款人员TextBox.Text, new Font("宋体", 10), Brushes.Black, 100, nFootPos + 88);
+            e.Graphics.DrawString("打印时间：" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), new Font("宋体", 10), Brushes.Black, 500, nFootPos + 88);
