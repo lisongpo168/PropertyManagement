@@ -46,8 +46,6 @@ namespace MyCommunity
                 this.小区名称ComboBox.Items.Add(dRow["小区名称"].ToString());
             }
             this.小区名称ComboBox.SelectedIndex = 0;
-            this.楼栋名称ComboBox.Items.Add("全部");
-            this.业主姓名ComboBox.Items.Add("全部");
             this.费用状态ComboBox.Items.Add("全部");
             this.费用状态ComboBox.Items.Add("已交费");
             this.费用状态ComboBox.Items.Add("未交费");
@@ -122,6 +120,7 @@ namespace MyCommunity
                 query += " AND (费用状态='" + v_费用状态 + "')";
             query += " group by 业主编号,计费年份,计费月份";
             dtData = DataHelper.GetDataTable(query);
+            if (dtData.Rows.Count == 0) return;
             DataTable ownerTable = DataHelper.GetDataTable(ownerQuery);
             string reciptQuery = string.Format("select * from 费用收据 where 收据编号 in ({0})", reciptNoQuery);
             DataTable reciptTable = DataHelper.GetDataTable(reciptQuery);
@@ -186,7 +185,9 @@ namespace MyCommunity
                 else
                 {
                     d_应交费 = d_电费 + d_物业费 - d_预存金额;
-                    v_备注 = string.Format("应收费已经扣除上期预存{0}元", d_预存金额.ToString("N2"));
+                    d_实交费 = Math.Ceiling(d_应交费);
+                    v_备注 = string.Format("已扣除上期预存{0}元", d_预存金额.ToString("N2"));
+                    d_预存金额 = d_实交费 - d_应交费;
                 }
                 this.水电气费DataGridView.Rows.Add(new object[] {v_业主编号, v_业主姓名, v_计费年月, d_电费.ToString("N2"), d_物业费.ToString("N2"),
                 d_应交费.ToString("N2"), d_实交费.ToString("N2"), d_预存金额.ToString("N2"), v_缴费状态, v_电话, v_备注});
@@ -197,7 +198,11 @@ namespace MyCommunity
         {//打印水电气费信息
             string v_计费年份 = this.计费年份ComboBox.Text.Trim();
             string v_计费月份 = this.计费月份ComboBox.Text.Trim();
-            string title = string.Format("{0}{1}年{2}月物业费总清单", this.小区名称ComboBox.Text, v_计费年份, v_计费月份);
+            string title = string.Empty;
+            if(v_计费月份 != "全年")
+                title = string.Format("{0}{1}年{2}月物业费总清单", this.小区名称ComboBox.Text, v_计费年份, v_计费月份);
+            else
+                title = string.Format("{0}{1}年全年物业费总清单", this.小区名称ComboBox.Text, v_计费年份);
             printDocument.DocumentName = title;
             printDocument.PrinterSettings = printDialog.PrinterSettings;
             printDocument.DefaultPageSettings = printDialog.PrinterSettings.DefaultPageSettings;

@@ -15,6 +15,7 @@ namespace MyCommunity
     {
         private DataTable dtData = new DataTable("水电气费明细表");
         private Dictionary<string, OwnerInfo> ownerInfoDic = new Dictionary<string, OwnerInfo>();
+        private Dictionary<string, string> communityInfoDic = new Dictionary<string, string>();
         private string MyCommunity;
         private string MyOperator;
         private string MyPrintIcon;
@@ -53,10 +54,15 @@ namespace MyCommunity
         private void InitCmbCommunity()
         {
             string query = "select * from 小区信息";
-            System.Data.DataTable dt = DataHelper.GetDataTable(query);
+            DataTable dt = DataHelper.GetDataTable(query);
+            communityInfoDic.Clear();
             foreach (System.Data.DataRow dRow in dt.Rows)
             {
-                this.小区名称ComboBox.Items.Add(dRow["小区名称"].ToString());
+                string v_小区名称 = Helper.Obj2String(dRow["小区名称"]);
+                string v_服务电话 = Helper.Obj2String(dRow["服务电话"]);
+                this.小区名称ComboBox.Items.Add(v_小区名称);
+                if(!communityInfoDic.ContainsKey(v_小区名称))
+                    communityInfoDic.Add(v_小区名称, v_服务电话);
             }
             if (dt.Rows.Count > 0)
                 this.小区名称ComboBox.SelectedIndex = 0;
@@ -107,7 +113,7 @@ namespace MyCommunity
             {
                 v_业主编号= this.业主姓名ComboBox.SelectedValue.ToString();
             }
-            if (this.未交DataGridView.Rows.Count <= 1 || string.IsNullOrEmpty(v_业主编号) || !ownerInfoDic.ContainsKey(v_业主编号))
+            if (this.未交DataGridView.Rows.Count < 1 || string.IsNullOrEmpty(v_业主编号) || !ownerInfoDic.ContainsKey(v_业主编号))
             {
                 new MsgBoxForm("提示", "请先查询出一个业主的未缴费信息后再新增！").ShowDialog();
                 return;
@@ -117,7 +123,7 @@ namespace MyCommunity
             this.收款日期DateTimePicker.Value  = DateTime.Now.Date;
             this.收款人员TextBox.Text  = this.MyOperator;
             this.应收金额TextBox.Text = (currOwnerInfo.d_物业费用 - currOwnerInfo.d_预存金额).ToString();
-            this.补充说明TextBox.Text = string.Format("上期预存已经抵扣{0}元", currOwnerInfo.d_预存金额);
+            this.补充说明TextBox.Text = string.Format("上期预存已抵扣{0}元", currOwnerInfo.d_预存金额);
             this.实收金额TextBox.Text = "";
             dtData.Rows.Clear();
         }
@@ -309,6 +315,12 @@ namespace MyCommunity
             e.Graphics.DrawLine(new Pen(Color.Black, (float)1.00), 50, 45, 50, MyPosY + 50);
             //右边框
             e.Graphics.DrawLine(new Pen(Color.Black, (float)1.00), 770, 45, 770, MyPosY + 50);
+            if (communityInfoDic.ContainsKey(this.MyCommunity))
+            {
+                string v_服务电话 = communityInfoDic[this.MyCommunity];
+                if(!string.IsNullOrEmpty(v_服务电话))
+                    e.Graphics.DrawString(string.Format("报修、查询费用请拨物业服务电话: {0}", v_服务电话), new Font("宋体", 10), Brushes.Black, 430, MyPosY + 55);
+            }
         }
         private void 保存Button_Click(object sender, EventArgs e)
         {//保存水电气费交款信息
