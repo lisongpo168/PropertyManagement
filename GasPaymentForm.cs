@@ -276,7 +276,7 @@ namespace MyCommunity
                 if (ownerInfo != null && MyID == 1)
                 {
                     d_物业费 = ownerInfo.d_物业费用;
-                    v_物业费 = d_物业费.ToString("N3");
+                    v_物业费 = d_物业费.ToString("N2");
                 }
                 double d_电费 = Helper.Obj2Double(MyRow["金额"]);
                 double d_合计 = d_电费 + d_物业费;
@@ -285,11 +285,11 @@ namespace MyCommunity
                 e.Graphics.DrawString(Helper.Obj2String(MyRow["上月数"]), new Font("宋体", 10), Brushes.Black, 180, MyPosY);
                 e.Graphics.DrawString(Helper.Obj2String(MyRow["本月数"]), new Font("宋体", 10), Brushes.Black, 235, MyPosY);
                 e.Graphics.DrawString(Helper.Obj2String(MyRow["用量"]), new Font("宋体", 10), Brushes.Black, 290, MyPosY);
-                e.Graphics.DrawString(d_电费.ToString("N3"), new Font("宋体", 10), Brushes.Black, 340, MyPosY);
+                e.Graphics.DrawString(d_电费.ToString("N2"), new Font("宋体", 10), Brushes.Black, 340, MyPosY);
                 e.Graphics.DrawString(priceInfo.d_公共照明价格.ToString("N3"), new Font("宋体", 10), Brushes.Black, 400, MyPosY);
                 e.Graphics.DrawString(priceInfo.d_电力损耗价格.ToString("N3"), new Font("宋体", 10), Brushes.Black, 470, MyPosY);
                 e.Graphics.DrawString(v_物业费, new Font("宋体", 10), Brushes.Black, 520, MyPosY);
-                e.Graphics.DrawString(d_合计.ToString("N3"), new Font("宋体", 10), Brushes.Black, 575, MyPosY);
+                e.Graphics.DrawString(d_合计.ToString("N2"), new Font("宋体", 10), Brushes.Black, 575, MyPosY);
                 MyPosY += 20;
                 MyID += 1;
             }

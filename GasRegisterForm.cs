@@ -136,7 +136,7 @@ namespace MyCommunity
             {//插入新月份费用的业主基本信息
                 string insertQuery = "INSERT INTO 水电气费 (楼栋名称,业主编号,业主姓名,表编号) SELECT 业主信息.楼栋名称,业主信息.业主编号,业主信息.业主姓名,电表信息.电表编号 from 业主信息 right join 电表信息 on 业主信息.业主编号=电表信息.业主编号 WHERE (业主信息.业主编号 NOT IN (SELECT 业主编号 FROM 迁出信息)) AND (业主信息.楼栋名称='" + v_楼栋名称 + "')";
                 DataHelper.UpdateOrDeleteRecord(insertQuery);
-                string updateQuery = "UPDATE 水电气费 SET 登记标志='正在登记',费用类型='" + v_费用类型 + "',计费年份=" + v_计费年份 + ",计费月份=" + v_计费月份 + " WHERE 登记标志 IS NULL AND (楼栋名称='" + v_楼栋名称 + "')";
+                string updateQuery = "UPDATE 水电气费 SET 登记标志='正在登记',费用类型='" + v_费用类型 + "',计费年份=" + v_计费年份 + ",计费月份=" + v_计费月份 + ",计费单价=" + d_计费单价 + " WHERE 登记标志 IS NULL AND (楼栋名称='" + v_楼栋名称 + "')";
                 DataHelper.UpdateOrDeleteRecord(updateQuery);
                 int MyLastMonth = Convert.ToInt16(v_计费月份) - 1;
                 int MyLastYear = Convert.ToInt16(v_计费年份);
@@ -160,14 +160,9 @@ namespace MyCommunity
                         string My表编号 = Helper.Obj2String(dRow[6]);
                         double My上月数 = Helper.Obj2Double(dRow[7]);
                         double My本月数 = Helper.Obj2Double(dRow[8]);
-                        updateQuery = "UPDATE 水电气费 SET 上月数=" + My本月数 + ",计费单价=" + d_计费单价 + " WHERE 计费年份=" + v_计费年份 + " AND 计费月份=" + v_计费月份 + " AND 费用类型='" + v_费用类型 + "' AND 楼栋名称='" + v_楼栋名称 + "' AND 业主编号='" + My业主编号 + "' AND 表编号='" + My表编号 + "'";
+                        updateQuery = "UPDATE 水电气费 SET 上月数=" + My本月数 + " WHERE 计费年份=" + v_计费年份 + " AND 计费月份=" + v_计费月份 + " AND 费用类型='" + v_费用类型 + "' AND 楼栋名称='" + v_楼栋名称 + "' AND 业主编号='" + My业主编号 + "' AND 表编号='" + My表编号 + "'";
                         DataHelper.UpdateOrDeleteRecord(updateQuery);
                     }
-                }
-                else
-                {
-                    updateQuery = "UPDATE 水电气费 SET 计费单价=" + d_计费单价 + " WHERE 计费年份=" + v_计费年份 + " AND 计费月份=" + v_计费月份 + " AND 费用类型='" + v_费用类型 + "' AND 楼栋名称='" + v_楼栋名称 + "'";
-                    DataHelper.UpdateOrDeleteRecord(updateQuery);
                 }
                 DataHelper.CommitUpdate();
                 SynGasRegisterInfo(v_计费年份, v_计费月份, v_楼栋名称, "正在登记");
