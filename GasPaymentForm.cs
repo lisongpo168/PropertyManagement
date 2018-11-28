@@ -104,6 +104,12 @@ namespace MyCommunity
             DataTable myTable = DataHelper.GetDataTable(query);
             this.未交DataGridView.DataSource = myTable;
             this.交款人员TextBox.Text = this.业主姓名ComboBox.Text;
+            AutoInputFeeInfo(v_业主编号);
+            if (this.未交DataGridView.Rows.Count < 1 || string.IsNullOrEmpty(v_业主编号) || !ownerInfoDic.ContainsKey(v_业主编号))
+            {
+                new MsgBoxForm("提示", "未查询到该业主的未交费信息！").ShowDialog();
+                return;
+            }
         }
                 
         private void 新增Button_Click(object sender, EventArgs e)
@@ -113,19 +119,12 @@ namespace MyCommunity
             {
                 v_业主编号= this.业主姓名ComboBox.SelectedValue.ToString();
             }
+            AutoInputFeeInfo(v_业主编号);
             if (this.未交DataGridView.Rows.Count < 1 || string.IsNullOrEmpty(v_业主编号) || !ownerInfoDic.ContainsKey(v_业主编号))
             {
                 new MsgBoxForm("提示", "请先查询出一个业主的未缴费信息后再新增！").ShowDialog();
                 return;
             }
-            OwnerInfo currOwnerInfo = ownerInfoDic[v_业主编号];
-            this.收据编号TextBox.Text = string.Format("WYF{0}", DateTime.Now.ToString("yyyyMMddHHmmss"));
-            this.收款日期DateTimePicker.Value  = DateTime.Now.Date;
-            this.收款人员TextBox.Text  = this.MyOperator;
-            this.应收金额TextBox.Text = (currOwnerInfo.d_物业费用 - currOwnerInfo.d_预存金额).ToString();
-            this.补充说明TextBox.Text = string.Format("上期预存已抵扣{0}元", currOwnerInfo.d_预存金额);
-            this.实收金额TextBox.Text = "";
-            dtData.Rows.Clear();
         }
         private void 添加Button_Click(object sender, EventArgs e)
         {//添加交款明细项目
@@ -170,7 +169,17 @@ namespace MyCommunity
                 dtData.Rows.Add(dRow);
                 double myAmount = Helper.String2Double(this.应收金额TextBox.Text.Trim());
                 myAmount += Helper.Obj2Double(this.未交DataGridView.CurrentRow.Cells[9].Value);
-                this.应收金额TextBox.Text = myAmount.ToString();
+                this.应收金额TextBox.Text = myAmount.ToString("N2");
+                if (dtData.Rows.Count > 0)
+                {
+                    int existingYear = Helper.Obj2Int(dtData.Rows[0]["年份"]);
+                    int existingMonth = Helper.Obj2Int(dtData.Rows[0]["月份"]);
+                    if (dtData.Rows.Count == Count未交DataGridViewMonth(existingYear, existingMonth))
+                    {
+                        double d_应交额 = Math.Ceiling(myAmount);
+                        this.实收金额TextBox.Text = d_应交额.ToString();
+                    }
+                }
                 RefreshDataGridViewStatus();
             }
             else
@@ -178,7 +187,20 @@ namespace MyCommunity
                 new MsgBoxForm("提示", "请先新增收费内容！").ShowDialog();
             }
         }
-        
+
+        private int Count未交DataGridViewMonth(int existingYear, int existingMonth)
+        {
+            int nCount = 0;
+            foreach (DataGridViewRow gridRow in this.未交DataGridView.Rows)
+            {
+                int nYear = Helper.Obj2Int(gridRow.Cells[1].Value);
+                int nMonth = Helper.Obj2Int(gridRow.Cells[2].Value);
+                if (existingYear == nYear && existingMonth == nMonth)
+                    nCount ++;
+            }
+            return nCount;
+        }
+
         private void 移除Button_Click(object sender, EventArgs e)
         {//移除交款明细项目
             try
@@ -359,7 +381,7 @@ namespace MyCommunity
                 float f_应收金额 = 0, f_实收金额 = 0, f_预存金额 = 0;
                 float.TryParse(v_应收金额, out f_应收金额);
                 float.TryParse(v_实收金额, out f_实收金额);
-                f_预存金额 = f_实收金额 - f_应收金额;
+                f_预存金额 = (float)Math.Round(f_实收金额 - f_应收金额, 2);
                 if (f_实收金额 < f_应收金额)
                 {
                     new MsgBoxForm("提示", "实收金额不能小于应收金额！").ShowDialog();
@@ -392,8 +414,30 @@ namespace MyCommunity
                 new MsgBoxForm("提示", "保存失败，请检查所填数据类型！").ShowDialog();
                 LogHelper.LogError(ex);
             }
-            查询Button_Click(null, null);
+            string querySelect = "SELECT 自动编号, 计费年份, 计费月份, 费用类型, 表编号, 上月数, 本月数, 表用量, 计费单价, 应交金额,补充说明 FROM 水电气费 WHERE (业主编号 ='" + v_业主编号 + "') AND (费用状态='未交费') ORDER BY 业主编号,表编号,计费年份,计费月份";
+            DataTable myTable = DataHelper.GetDataTable(querySelect);
+            this.未交DataGridView.DataSource = myTable;
+            this.交款人员TextBox.Text = this.业主姓名ComboBox.Text;
+            AutoInputFeeInfo(v_业主编号);
+        }
+
+        private void AutoInputFeeInfo(string v_业主编号)
+        {
             dtData.Rows.Clear();
+            if (this.未交DataGridView.Rows.Count < 1 || string.IsNullOrEmpty(v_业主编号) || !ownerInfoDic.ContainsKey(v_业主编号))
+            {
+                this.应收金额TextBox.Text = "";
+                this.补充说明TextBox.Text = "";
+                this.实收金额TextBox.Text = "";
+                return;
+            }
+            OwnerInfo currOwnerInfo = ownerInfoDic[v_业主编号];
+            this.收据编号TextBox.Text = string.Format("WYF{0}", DateTime.Now.ToString("yyyyMMddHHmmss"));
+            this.收款日期DateTimePicker.Value = DateTime.Now.Date;
+            this.收款人员TextBox.Text = this.MyOperator;
+            this.应收金额TextBox.Text = (currOwnerInfo.d_物业费用 - currOwnerInfo.d_预存金额).ToString("N2");
+            this.补充说明TextBox.Text = string.Format("上期预存已抵扣{0}元", currOwnerInfo.d_预存金额.ToString("N2"));
+            this.实收金额TextBox.Text = "";
         }
 
         private void 小区名称ComboBox_SelectedIndexChanged(object sender, EventArgs e)
