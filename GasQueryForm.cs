@@ -37,7 +37,7 @@ namespace MyCommunity
             {
                 this.计费月份ComboBox.Items.Add(i.ToString());
             }
-            this.计费月份ComboBox.SelectedIndex = 0;
+            this.计费月份ComboBox.Text = DateTime.Now.Month.ToString();
             this.小区名称ComboBox.Items.Add("全部");
             string query = "SELECT * FROM 小区信息";
             DataTable myTable = DataHelper.GetDataTable(query);

@@ -20,6 +20,7 @@ namespace MyCommunity
 
         private void GasRegisterForm_Load(object sender, EventArgs e)
         {
+            DateTime dtNow = DateTime.Now.Date;
             for (int i = 2009; i <= 2099; i++)
             {
                 this.计费年份ToolStripComboBox.Items.Add(i.ToString());
@@ -28,12 +29,16 @@ namespace MyCommunity
             {
                 this.计费月份ToolStripComboBox.Items.Add(i.ToString());
             }
+            this.计费年份ToolStripComboBox.SelectedText = dtNow.Year.ToString();
+            this.计费月份ToolStripComboBox.SelectedText = dtNow.Month.ToString();
             string query = "select * from 小区信息";
-            System.Data.DataTable dt = DataHelper.GetDataTable(query);
-            foreach (System.Data.DataRow dRow in dt.Rows)
+            DataTable dt = DataHelper.GetDataTable(query);
+            foreach (DataRow dRow in dt.Rows)
             {
                 this.小区名称ToolStripComboBox.Items.Add(dRow["小区名称"].ToString());
             }
+            if (dt.Rows.Count > 0)
+                this.小区名称ToolStripComboBox.SelectedIndex = 0;
         }               
         private void 查询ToolStripButton_Click(object sender, EventArgs e)
         {
@@ -253,6 +258,8 @@ namespace MyCommunity
             {
                 this.楼栋名称ToolStripComboBox.Items.Add(dRow["楼栋名称"].ToString());
             }
+            if (myTable.Rows.Count > 0)
+                this.楼栋名称ToolStripComboBox.SelectedIndex = 0;
         }
    }
 }
